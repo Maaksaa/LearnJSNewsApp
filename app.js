@@ -76,6 +76,7 @@ const newsService = (function () {
 // elements
 const form = document.forms["newsControls"];
 const countrySelect = form.elements["country"];
+const categorySelect = form.elements["category"];
 const searchInput = form.elements["search"];
 
 form.addEventListener("submit", (e) => {
@@ -110,9 +111,10 @@ function onGetResponse(err, res) {
     showAlert(err, "error-msg");
     return;
   }
-
+  console.log(res.articles.length);
   if (!res.articles.length) {
     // show empty message
+    showAlert('По запросу  "' + searchInput.value + '" нет новостей(');
     return;
   }
   renderNews(res.articles);
@@ -146,6 +148,10 @@ function clearContainer(container) {
 
 // News item template
 function newsTemplate({ urlToImage, title, url, description }) {
+  if (!urlToImage) {
+    urlToImage =
+      "https://avatanplus.com/files/resources/original/5ab6577f870fb1625845ca41.png";
+  }
   return `
     <div class="col s12">
       <div class="card">
